@@ -1,0 +1,27 @@
+*{
+    box-sizing: border-box;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: normal;
+}
+
+body{
+    background-color: gray;
+    margin: 0px;
+}
+
+.calc-container{
+    display: grid;
+    grid-template-columns: repeat(4, 50px);
+    grid-template-rows: repeat(6, 50px);
+    
+    justify-content: center;
+    align-content: center;
+}
+
+.span-2{
+    grid-column: span 2;
+}
+
+.display{
+    grid-column: 1 / -1;
+}

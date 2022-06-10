@@ -22,6 +22,10 @@ body{
         padding-top: 7px;
     }
 
+    .span-2{
+        background-color: bisque;
+    }
+
     .span-2.horizontal{
         grid-column: span 2;
     }
@@ -36,6 +40,14 @@ body{
 
     button:hover{
         background-color: grey;
+    }
+
+    .operator{
+        background-color: lightcoral;
+    }
+
+    .special, .delete{
+        background-color: lightsteelblue;
     }
 
 .display{

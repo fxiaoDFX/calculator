@@ -1,3 +1,12 @@
+// html elements
+const numberButtons = document.querySelectorAll('button.number');   // 0-9 buttons
+const operators = document.querySelectorAll('button.operation');    // 7 buttons 
+const acButton = document.querySelector('button.clear-all');        // AC
+const delButton = document.querySelector('button.delete');          // DEL
+const equalsButton = document.querySelector('button.equals');       // =
+const previousOperandTxt = document.querySelector('.display .previous-op'); // display
+const currentOperandTxt = document.querySelector('.display .current-op');   // display
+
 // operations
 function add(x, y){
     return x + y;
@@ -39,32 +48,64 @@ function factorial(x){
     return x * factorial(x - 1)
 }
 
+function percent(x){
+    return x.toString() + '%';
+}
+
+function plusMinus(x){
+    if(x < 0) 
+        return Math.abs(x);
+    else 
+        return x * -1;
+}
+
 // TODO: ALL BELOW FUNCTIONS
 let term1 = 0;
 let term2 = 0;
 
 const calculator = {
-    previousOperation : '123',
-    currentOperation : '789',
+    previousOperandTxt : '123',
+    currentOperandTxt : '789',
     operator : '+',
 
     /**
      * Clears all calculator data
      */
     clear: function(){
-        this.previousOperation = '';
-        this.currentOperation = '';
+        this.previousOperandTxt = '';
+        this.currentOperandTxt = '';
         this.operator = '';
     },
 
     /**
-     * Deletes the last most character in calculator's currentOperation
+     * Deletes the last most character in calculator's currentOperandTxt
      */
     delete: function(){
-        const string = this.currentOperation.slice(0, -1);
-        this.currentOperation = string;
+        const string = this.currentOperandTxt.slice(0, -1);
+        this.currentOperandTxt = string;
     },
+    
+    // takes user input and puts it into a string
+    append: function(number){
+        // Check for double .
+        if(number === '.' && this.currentOperandTxt.includes('.'))
+            return;
+        this.currentOperandTxt = number.toString() + this.currentOperandTxt.toString();
+    },
+
+    // update display
+    updateDisplay: function(){
+
+    }
 };
+
+// Update the display of the calculator every time a button is pressed
+numberButtons.forEach(numberButton => {
+    numberButton.addEventListener('click', () => {
+        calculator.append(numberButton.textContent);
+        calculator.updateDisplay();
+    })
+})
 
 
 // other buttons
@@ -105,8 +146,4 @@ function updateDisplay(string){
     return string;
 }
 
-/* const buttons = document.querySelectorAll('button');
-buttons.forEach(button => {
-    button.onclick = (e) =>
-        console.log(e.target.textContent);
-}); */
+

@@ -1,11 +1,12 @@
 // html elements
 const numberButtons = document.querySelectorAll('button.number');   // 0-9 buttons
-const operators = document.querySelectorAll('button.operation');    // 7 buttons 
+const operators = document.querySelectorAll('button.operation');    // 6 buttons 
+const single = document.querySelector('.single-operation');       // 1 button (factorial)
 const acButton = document.querySelector('button.clear-all');        // AC
 const delButton = document.querySelector('button.delete');          // DEL
 const equalsButton = document.querySelector('button.equals');       // =
-const previousOperandTxt = document.querySelector('.display .previous-op'); // display
-const currentOperandTxt = document.querySelector('.display .current-op');   // display
+const secondary = document.querySelector('.display .secondary'); // display secondary will hold evaluations until = is pressed
+const primary = document.querySelector('.display .primary');   // display primary will hold string 
 
 // operations
 function add(x, y){
@@ -60,13 +61,11 @@ function plusMinus(x){
 }
 
 // TODO: ALL BELOW FUNCTIONS
-let term1 = 0;
-let term2 = 0;
 
 const calculator = {
-    previousOperandTxt : '123',
-    currentOperandTxt : '789',
-    operator : '+',
+    previousOperandTxt : '',    
+    currentOperandTxt: '',
+    operator : '',
 
     /**
      * Clears all calculator data
@@ -74,7 +73,7 @@ const calculator = {
     clear: function(){
         this.previousOperandTxt = '';
         this.currentOperandTxt = '';
-        this.operator = '';
+        this.op = '';
     },
 
     /**
@@ -90,60 +89,103 @@ const calculator = {
         // Check for double .
         if(number === '.' && this.currentOperandTxt.includes('.'))
             return;
-        this.currentOperandTxt = number.toString() + this.currentOperandTxt.toString();
+        this.currentOperandTxt = this.currentOperandTxt.toString() + number.toString();
     },
 
     // update display
     updateDisplay: function(){
-
+        // Update display when number is pressed
+        primary.textContent = this.currentOperandTxt;
+        secondary.textContent = this.previousOperandTxt;
     }
 };
 
+calculator.clear();
+calculator.updateDisplay();
+
+/* EVENT LISTENERS */
 // Update the display of the calculator every time a button is pressed
+
+// AC button
+acButton.addEventListener('click', () => {
+    calculator.clear();
+    calculator.updateDisplay();
+})
+
+// numpad
 numberButtons.forEach(numberButton => {
     numberButton.addEventListener('click', () => {
         calculator.append(numberButton.textContent);
         calculator.updateDisplay();
     })
+});
+
+// operation
+operators.forEach(operator => {
+    operator.addEventListener('click', () => {
+        calculator.op = operator.textContent;
+        // pressing operator a second time acts as equals
+        if(calculator.currentOperandTxt != '' && calculator.previousOperandTxt != '' && calculator.op != '' ){
+            operate(calculator.currentOperandTxt, calculator.previousOperandTxt, calculator.op);
+        }
+        calculator.previousOperandTxt = calculator.currentOperandTxt;
+        calculator.currentOperandTxt = '';
+    })
+});
+
+// single-operation
+single.addEventListener('click', () => {
+    calculator.op = single.textContent;
+
 })
 
+// =
+equalsButton.addEventListener('click', () => {
+    console.log('equals = ' + calculator.op);
+    let currentOperandTxtValue = calculator.currentOperandTxt;
+    let previousOperandTxtValue = calculator.previousOperandTxt;
+    console.log(calculator);
+    operate(currentOperandTxtValue, previousOperandTxtValue, calculator.op);
+    calculator.currentOperandTxt = calculator.previousOperandTxt;
+    calculator.previousOperandTxt = '';
+    calculator.updateDisplay();
+
+});
 
 // other buttons
 // TODO: takes 2 numbers and an operation
-function operate(x, y, op){
+function operate(currentOperandTxtValue, previousOperandTxtValue, op){
+    let x = parseFloat(currentOperandTxtValue);
+    let y = parseFloat(previousOperandTxtValue);
+    let eval = 0;
+    console.log('the operation is ' + typeof(op));
     switch(op){
         case "+":
-            return add(x, y);
+            eval = add(x, y);
+            break;
         case "-":
-            return subtract(x, y);
+            console.log('subtract');
+            eval = subtract(y, x);
+            break;
         case "*":
-            return multiply(x, y);
+            console.log('multiply');
+            eval = multiply(x, y);
+            break;
         case "÷":
-            return divide(x, y);
+            console.log('divide');
+            eval = divide(x, y);
+            break;
         case "xʸ":
-            return power(x, y);
+            console.log('power');
+            eval = power(x, y);
+            break;
         case "x!":
-            return factorial(x);
+            console.log('factorial');
+            eval = factorial(y);
+            break;
+        default: return;
     }
+    calculator.previousOperandTxt = eval;
+    calculator.updateDisplay();
 }
-
-/**
- * Whenever user enters a number input, update the display
- * @param {number} numberEvent is the number that was entered into the calculator 
- */
-function append(numberEvent){
-    let string = '';
-    string += numberEvent;
-    updateDisplay(string);
-}
- 
-/**
- * Takes string of numbers and displays it for the user
- * @param {string} string 
- * @returns 
- */
-function updateDisplay(string){
-    return string;
-}
-
 

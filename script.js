@@ -90,6 +90,101 @@ numberButtons.forEach(numberButton => {
     })
 });
 
+/**
+ * 
+ * @param {string} key the key that was pressed
+ */
+function keyNum(key){
+    calculator.append(key);
+    calculator.updateDisplay();
+}
+document.addEventListener('keyup', (e) => {
+    let key = e.key;
+    console.log(key);
+        switch(key){
+            case '0':
+                keyNum(key);
+                break;
+            case '1':
+                keyNum(key);
+                break;
+            case '2':
+                keyNum(key);
+                break;
+            case '3':
+                keyNum(key);
+                break;
+            case '4':
+                keyNum(key);
+                break;
+            case '5':
+                keyNum(key);
+                break;
+            case '6':
+                keyNum(key);
+                break;
+            case '7':
+                keyNum(key);
+                break;
+            case '8':
+                keyNum(key);
+                break;
+            case '9':
+                keyNum(key);
+                break;
+            case '.':
+                keyNum(key);
+                break;
+            case '+':
+                doOperation(key);
+                break;
+            case '-':
+                doOperation(key);
+                break;
+            case '*':
+                doOperation(key);
+                break;
+            case '/':
+                doOperation(key);
+                break;
+            case '!':
+                let x = factorial(parseFloat(calculator.currentOperand));
+                calculator.currentOperand = x;
+                calculator.updateDisplay();
+                break;
+            case '%':
+                let percentage = percent(calculator.currentOperand);
+                calculator.currentOperand = percentage;
+                calculator.updateDisplay();
+                break;
+            case 'Enter':
+                if(calculator.previousOperand != '' && calculator.currentOperand != '' && calculator.operator != ''){
+                    operate(calculator.currentOperand, calculator.previousOperand, calculator.operator);
+                    calculator.updateDisplay();
+                    calculator.operator = '=';
+                }else
+                    return;
+                break;
+            case 'Backspace':
+                calculator.delete();
+                calculator.updateDisplay();
+                break;
+            default: 
+                return;
+        }
+})
+
+function doOperation(key){
+    if(calculator.previousOperand != '' && calculator.currentOperand != '' && calculator.operator != ''){
+        operate(calculator.currentOperand, calculator.previousOperand, calculator.operator);
+        calculator.updateDisplay();
+    }
+    // get operator type
+    calculator.operator = key;
+    // after pressing button, save current display into previous and then clear current display
+    calculator.previousOperand = currentPtr.textContent;
+    calculator.currentOperand = '';
+}
 // operation buttons
 operators.forEach(operator => {
     operator.addEventListener('click', () => {
@@ -137,6 +232,8 @@ squareButton.addEventListener('click', () => {
     calculator.currentOperand = x;
     calculator.updateDisplay();
 })
+
+/* END OF EVENT LISTENERS */
 
 /**
  * Takes 2 string of numbers, converts them to float, and then evaluates

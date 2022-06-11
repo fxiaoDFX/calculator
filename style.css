@@ -42,7 +42,7 @@ body{
         background-color: grey;
     }
 
-    .operator{
+    .operation{
         background-color: lightcoral;
     }
 
@@ -60,15 +60,15 @@ body{
     align-items: flex-end;
     word-wrap:break-word;
     word-break: break-all;
-
+    
 }
-    .display .primary{
+    .display .current-operand-element{
         /* display: none; to be hidden after this project is finalized */
         color: white;
         font-size: 2rem;
     }
 
-    .display .secondary{
+    .display .previous-operand-element{
         color: rgba(255, 255, 255, 200);
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
